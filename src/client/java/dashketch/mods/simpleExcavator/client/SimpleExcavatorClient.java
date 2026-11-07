@@ -38,7 +38,6 @@ public class SimpleExcavatorClient implements ClientModInitializer {
             if (client.player == null) return;
 
             while (openGuiKey.wasPressed()) {
-                //noinspection NoTranslation
                 client.setScreen(new ExcavatorScreen(Text.translatable("screen.simple_excavator.config")));
             }
 

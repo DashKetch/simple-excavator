@@ -86,6 +86,7 @@ public class ExcavatorManager {
         breakTicks = 0;
         if (client.options != null) {
             client.options.forwardKey.setPressed(false);
+            client.options.jumpKey.setPressed(false);
         }
         if (client.player != null) {
             client.player.sendMessage(Text.literal("§e[SimpleExcavator] Excavation Paused."), true);
@@ -150,11 +151,18 @@ public class ExcavatorManager {
 
                 client.player.setYaw(yaw);
                 client.player.setPitch(pitch);
+
+                // Walk forward toward target
                 client.options.forwardKey.setPressed(true);
+
+                // Auto-jump if hitting a block/step obstacle in front of the player
+                client.options.jumpKey.setPressed(client.player.horizontalCollision);
                 return;
             }
 
+            // In range: release movement keys and mine
             client.options.forwardKey.setPressed(false);
+            client.options.jumpKey.setPressed(false);
 
             Vec3d targetVec = Vec3d.ofCenter(target);
             double dx = targetVec.x - client.player.getX();
@@ -235,7 +243,7 @@ public class ExcavatorManager {
     }
 
     private void drawLine(Matrix4f matrix, VertexConsumer buffer, float x1, float y1, float z1, float x2, float y2, float z2) {
-        buffer.vertex(matrix, x1, y1, z1).color(0.0f, 1.0f, (float) 1.0, (float) 0.5).normal(0, 1, 0).lineWidth(1.0f);
-        buffer.vertex(matrix, x2, y2, z2).color(0.0f, 1.0f, (float) 1.0, (float) 0.5).normal(0, 1, 0).lineWidth(1.0f);
+        buffer.vertex(matrix, x1, y1, z1).color(0.0f, 1.0f, 1.0f, 0.5f).normal(0, 1, 0).lineWidth(1.0f);
+        buffer.vertex(matrix, x2, y2, z2).color(0.0f, 1.0f, 1.0f, 0.5f).normal(0, 1, 0).lineWidth(1.0f);
     }
 }
