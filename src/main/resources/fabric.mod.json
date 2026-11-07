@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "simple-excavator",
+  "version": "${version}",
+  "name": "Dash's Simple Excavator",
+  "description": "Excavate large areas in survival on the client!",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/simple-excavator/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "fabric-datagen": [
+      "dashketch.mods.simpleExcavator.client.SimpleExcavatorDataGenerator"
+    ],
+    "client": [
+      "dashketch.mods.simpleExcavator.client.SimpleExcavatorClient"
+    ],
+    "main": [
+      "dashketch.mods.simpleExcavator.SimpleExcavator"
+    ]
+  },
+  "mixins": [
+    "simple-excavator.mixins.json",
+    {
+      "config": "simple-excavator.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
