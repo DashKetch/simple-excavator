@@ -18,17 +18,11 @@ public class ExcavatorScreen extends Screen {
         int centerX = this.width / 2;
         int centerY = this.height / 2;
 
-        // Shape cycle button
+        // Shape cycle button pulling directly from the ShapeRegistry
         this.addDrawableChild(ButtonWidget.builder(
-                Text.literal("Shape: " + ExcavatorManager.getInstance().getCurrentShape().name()), button -> {
-                    ExcavatorManager.ShapeType next = switch (ExcavatorManager.getInstance().getCurrentShape()) {
-                        case RECTANGLE -> ExcavatorManager.ShapeType.SPHERE;
-                        case SPHERE -> ExcavatorManager.ShapeType.VERTICAL_CYLINDER;
-                        case VERTICAL_CYLINDER -> ExcavatorManager.ShapeType.HORIZONTAL_CYLINDER;
-                        case HORIZONTAL_CYLINDER -> ExcavatorManager.ShapeType.RECTANGLE;
-                    };
-                    ExcavatorManager.getInstance().setShape(next);
-                    button.setMessage(Text.literal("Shape: " + next.name()));
+                Text.literal("Shape: " + ExcavatorManager.getInstance().getCurrentShapeRule().getName()), button -> {
+                    ExcavatorManager.getInstance().nextShape();
+                    button.setMessage(Text.literal("Shape: " + ExcavatorManager.getInstance().getCurrentShapeRule().getName()));
                 }
         ).dimensions(centerX - 100, centerY - 60, 200, 20).build());
 
@@ -63,7 +57,6 @@ public class ExcavatorScreen extends Screen {
         super.render(context, mouseX, mouseY, delta);
         context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFFFFF);
 
-        // Display current corner coordinates
         BlockPos c1 = ExcavatorManager.getInstance().getCorner1();
         BlockPos c2 = ExcavatorManager.getInstance().getCorner2();
 
