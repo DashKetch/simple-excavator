@@ -1,6 +1,11 @@
 {
+  "category.simple_excavator": "Simple Excavator",
   "key.simple_excavator.open_gui": "Open Excavator GUI",
   "key.simple_excavator.toggle": "Toggle Excavation",
-  "category.simple_excavator": "Simple Excavator",
-  "screen.simple_excavator.config": "Excavator Configuration"
+  "key.simple_excavator.toggle_hud": "Toggle Dimensions HUD",
+  "key.simple_excavator.open_preview": "Open Shape Preview",
+  "key.simple_excavator.rotate_preview": "Rotate Preview",
+  "key.simple_excavator.select_edge": "Select Edge",
+  "screen.simple_excavator.config": "Excavator Configuration",
+  "screen.simple_excavator.preview": "Shape 3D Preview"
 }
