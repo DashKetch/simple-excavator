@@ -16,7 +16,7 @@ public class SimpleExcavatorClient implements ClientModInitializer {
     private static KeyBinding openGuiKey;
     private static KeyBinding toggleExcavationKey;
 
-    private static final KeyBinding.Category simpleExcavatorCategory = KeyBinding.Category.create(Identifier.of("category.simple_excavator"));
+    private static final KeyBinding.Category simpleExcavatorCategory = KeyBinding.Category.create(Identifier.of("simple_excavator"));
 
     @Override
     public void onInitializeClient() {
