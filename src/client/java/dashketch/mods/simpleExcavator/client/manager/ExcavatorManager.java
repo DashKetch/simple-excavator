@@ -210,9 +210,16 @@ public class ExcavatorManager {
 
         Matrix4f matrix = matrices.peek().getPositionMatrix();
 
-        for (int i = currentIndex; i < targetQueue.size(); i++) {
+        int renderedCount = 0;
+        int maxRender = 300;
+
+        for (int i = currentIndex; i < targetQueue.size() && renderedCount < maxRender; i++) {
             BlockPos pos = targetQueue.get(i);
-            drawBoxOutline(matrix, buffer, new Box(pos));
+
+            if (pos.getSquaredDistance(cameraPos.x, cameraPos.y, cameraPos.z) <= 576.0) {
+                drawBoxOutline(matrix, buffer, new Box(pos));
+                renderedCount++;
+            }
         }
 
         matrices.pop();
