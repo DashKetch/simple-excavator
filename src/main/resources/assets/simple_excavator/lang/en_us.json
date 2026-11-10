@@ -1,5 +1,5 @@
 {
-  "category.simple_excavator": "Simple Excavator",
+  "key.category.simple_excavator.main": "Simple Excavator",
   "key.simple_excavator.open_gui": "Open Excavator GUI",
   "key.simple_excavator.toggle": "Toggle Excavation",
   "key.simple_excavator.toggle_hud": "Toggle Dimensions HUD",

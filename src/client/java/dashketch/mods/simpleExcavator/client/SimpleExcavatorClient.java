@@ -15,43 +15,41 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class SimpleExcavatorClient implements ClientModInitializer {
     private static KeyBinding openGUIKey;
     private static KeyBinding toggleExcavationKey;
     private static KeyBinding toggleDimensionsHUDKey;
     private static KeyBinding openPreviewGUIKey;
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static KeyBinding rotatePreviewKey;
-    @SuppressWarnings({"unused", "FieldCanBeLocal"})
     private static KeyBinding selectEdgeKey;
 
-
-    private static final KeyBinding.Category CATEGORY = KeyBinding.Category.create(Identifier.of("simple_excavator"));
+    private static final KeyBinding.Category simpleExcavatorCategory = KeyBinding.Category.create(Identifier.of("simple_excavator", "main"));
 
     @Override
     public void onInitializeClient() {
         openGUIKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.open_gui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, CATEGORY
+                "key.simple_excavator.open_gui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_U, simpleExcavatorCategory
         ));
 
         toggleExcavationKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, CATEGORY
+                "key.simple_excavator.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_P, simpleExcavatorCategory
         ));
 
         toggleDimensionsHUDKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H, CATEGORY
+                "key.simple_excavator.toggle_hud", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_H, simpleExcavatorCategory
         ));
 
         openPreviewGUIKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.open_preview", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, CATEGORY
+                "key.simple_excavator.open_preview", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, simpleExcavatorCategory
         ));
 
         rotatePreviewKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.rotate_preview", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, CATEGORY
+                "key.simple_excavator.rotate_preview", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_RIGHT, simpleExcavatorCategory
         ));
 
         selectEdgeKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.simple_excavator.select_edge", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, CATEGORY
+                "key.simple_excavator.select_edge", InputUtil.Type.MOUSE, GLFW.GLFW_MOUSE_BUTTON_LEFT, simpleExcavatorCategory
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -77,7 +75,6 @@ public class SimpleExcavatorClient implements ClientModInitializer {
         });
 
         WorldRenderEvents.AFTER_ENTITIES.register(context -> ExcavatorManager.getInstance().renderHighlight(context));
-        //noinspection deprecation
         HudRenderCallback.EVENT.register((drawContext, tickCounter) -> DimensionsHud.render(drawContext));
     }
 }
