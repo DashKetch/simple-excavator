@@ -1,13 +1,13 @@
 package dashketch.mods.simpleExcavator.client.gui;
 
+import dashketch.mods.simpleExcavator.client.SimpleExcavatorClient;
 import dashketch.mods.simpleExcavator.client.manager.ExcavatorManager;
 import dashketch.mods.simpleExcavator.client.shape.IShapeRule;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.glfw.GLFW;
-import net.minecraft.client.gui.Click;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ public class ShapePreviewScreen extends Screen {
 
     private final List<BlockPos> previewBlocks = new ArrayList<>();
     private final ProjectedEdge[] currentEdges = new ProjectedEdge[12];
-    private ProjectedEdge hoveredEdge = null;
 
     public static class ProjectedEdge {
         int x0, y0, x1, y1;
@@ -38,7 +37,7 @@ public class ShapePreviewScreen extends Screen {
             double l2 = (double)(x1 - x0) * (x1 - x0) + (double)(y1 - y0) * (y1 - y0);
             if (l2 == 0) return Math.hypot(mx - x0, my - y0);
             double t = ((mx - x0) * (x1 - x0) + (my - y0) * (y1 - y0)) / l2;
-            t = Math.max(0, Math.min(1, t));
+            t = Math.clamp(t, 0, 1);
             double projX = x0 + t * (x1 - x0);
             double projY = y0 + t * (y1 - y0);
             return Math.hypot(mx - projX, my - projY);
@@ -148,12 +147,13 @@ public class ShapePreviewScreen extends Screen {
 
     @Override
     public boolean mouseClicked(Click click, boolean doubled) {
-        if (click.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        // Mouse keybindings are never updated while a Screen is open, so match them here.
+        if (SimpleExcavatorClient.rotatePreviewKey.matchesMouse(click)) {
             isRotating = true;
             lastMouseX = click.x();
             lastMouseY = click.y();
             return true;
-        } else if (click.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+        } else if (SimpleExcavatorClient.selectEdgeKey.matchesMouse(click)) {
             updateCurrentEdges();
             ProjectedEdge clickedEdge = findClosestEdge(click.x(), click.y());
             // Increased hit radius to 20 pixels for effortless clicking
@@ -176,7 +176,7 @@ public class ShapePreviewScreen extends Screen {
 
     @Override
     public boolean mouseReleased(Click click) {
-        if (click.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        if (SimpleExcavatorClient.rotatePreviewKey.matchesMouse(click)) {
             isRotating = false;
             return true;
         }
@@ -213,12 +213,12 @@ public class ShapePreviewScreen extends Screen {
         if (c1 != null && c2 != null && rule != null) {
             renderShapePreview3D(context, c1, c2, mouseX, mouseY);
         } else {
-            context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Corners not set yet! Open config (U) to set them."), this.width / 2, this.height / 2, 0xFF5555);
+            context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Corners not set yet! Open config (U) to set them."), this.width / 2, this.height / 2, 0xFFFF5555);
         }
 
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 15, 0xFFFFFF);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Hold Right-Click & Drag to Rotate | Scroll to Zoom"), this.width / 2, 30, 0xAAAAAA);
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal(selectedEdgeInfo), this.width / 2, this.height - 25, 0x55FF55);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 15, 0xFFFFFFFF);
+        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal("Hold Right-Click & Drag to Rotate | Scroll to Zoom"), this.width / 2, 30, 0xFFAAAAAA);
+        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal(selectedEdgeInfo), this.width / 2, this.height - 25, 0xFF55FF55);
     }
 
     private ProjectedEdge findClosestEdge(double mx, double my) {
@@ -282,7 +282,7 @@ public class ShapePreviewScreen extends Screen {
         // 2. Update and render Bounding Box Edges with hover detection
         updateCurrentEdges();
 
-        hoveredEdge = findClosestEdge(mouseX, mouseY);
+        ProjectedEdge hoveredEdge = findClosestEdge(mouseX, mouseY);
 
         for (ProjectedEdge e : currentEdges) {
             if (e == null) continue;
@@ -291,7 +291,7 @@ public class ShapePreviewScreen extends Screen {
         }
 
         String shapeName = "Shape: " + ExcavatorManager.getInstance().getCurrentShapeRule().getName();
-        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal(shapeName), (int)screenCenterX, (int)screenCenterY - 12, 0xFFD700);
+        context.drawCenteredTextWithShadow(this.textRenderer, Text.literal(shapeName), (int)screenCenterX, (int)screenCenterY - 12, 0xFFFFD700);
     }
 
     private void drawLine(DrawContext context, int x0, int y0, int x1, int y1, int color) {

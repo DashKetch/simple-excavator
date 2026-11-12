@@ -15,14 +15,14 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
-@SuppressWarnings({"unused", "FieldCanBeLocal"})
+@SuppressWarnings("FieldCanBeLocal")
 public class SimpleExcavatorClient implements ClientModInitializer {
     private static KeyBinding openGUIKey;
     private static KeyBinding toggleExcavationKey;
     private static KeyBinding toggleDimensionsHUDKey;
     private static KeyBinding openPreviewGUIKey;
-    private static KeyBinding rotatePreviewKey;
-    private static KeyBinding selectEdgeKey;
+    public static KeyBinding rotatePreviewKey;
+    public static KeyBinding selectEdgeKey;
 
     private static final KeyBinding.Category simpleExcavatorCategory = KeyBinding.Category.create(Identifier.of("simple_excavator", "main"));
 
